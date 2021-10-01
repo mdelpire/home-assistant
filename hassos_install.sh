@@ -144,10 +144,10 @@ msg "Creating VM..."
 VM_NAME=$(sed -e "s/\_//g" -e "s/.${RELEASE_TYPE}.*$//" <<< $FILE)
 qm create $VMID -agent 1 -bios ovmf -name $VM_NAME -net0 virtio,bridge=vmbr0 \
   -onboot 1 -ostype l26 -scsihw virtio-scsi-pci
-pvesm alloc $STORAGE $VMID $DISK0 128 1>&/dev/null
+pvesm alloc $STORAGE $VMID $DISK0 64M 1>&/dev/null
 qm importdisk $VMID ${FILE%.*} $STORAGE ${IMPORT_OPT:-} 1>&/dev/null
 qm set $VMID \
-  -efidisk0 ${DISK0_REF},size=128K \
+  -efidisk0 ${DISK0_REF},size=64M \
   -sata0 ${DISK1_REF},size=6G > /dev/null
 qm set $VMID \
   -boot order=sata0 > /dev/null
